@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-surface: #14141b;
+  --bg-card: #1c1c26;
+  --text-primary: #f4f1ea;
+  --text-muted: #9a958e;
+  --accent-gold: #c9a84c;
+  --accent-gold-bright: #e8c767;
+  --accent-cream: #e8dcc4;
+  --border-color: #2a2a33;
+  --ink: #08080c;
+}
+
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --color-surface: var(--bg-surface);
+  --color-card: var(--bg-card);
+  --color-muted: var(--text-muted);
+  --color-gold: var(--accent-gold);
+  --color-gold-bright: var(--accent-gold-bright);
+  --color-cream: var(--accent-cream);
+  --color-border: var(--border-color);
+  --font-sans: var(--font-geist-sans);
+  --font-serif: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Animated underline */
+.gold-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.gold-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-bright));
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: drawLine 1.2s ease-out 0.6s forwards;
+}
+
+@keyframes drawLine {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Fade in up */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.fade-in-up-delay-1 { animation-delay: 0.2s; }
+.fade-in-up-delay-2 { animation-delay: 0.4s; }
+.fade-in-up-delay-3 { animation-delay: 0.6s; }
+.fade-in-up-delay-4 { animation-delay: 0.8s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Grain texture overlay */
+.grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.03;
+  z-index: 50;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Manuscript illustration background */
+.manuscript-bg {
+  background-image: radial-gradient(ellipse at 20% 30%, rgba(201,168,76,0.08) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 70%, rgba(201,168,76,0.05) 0%, transparent 45%);
+}

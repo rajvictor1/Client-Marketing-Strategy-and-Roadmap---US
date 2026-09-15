@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Regina Brooks — AI Support</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<style>:root {
+    --bg: #05060b;
+    --surface: #0c1020;
+    --card: #11162a;
+    --text: #eef1f8;
+    --muted: #8b92a8;
+    --blue: #3b82f6;
+    --blue-bright: #60a5fa;
+    --blue-dim: #1d4ed8;
+    --border: #1e2742;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    font-size: 15px;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; height: auto; }
+  .topbar {
+    background: rgba(5,6,11,.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--blue-bright);
+    line-height: 1.2;
+  }
+  .menu-toggle {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    padding: 12px 20px 16px;
+    gap: 4px;
+  }
+  .nav.open { display: flex; }
+  .nav a {
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all .2s ease;
+  }
+  .nav a:hover, .nav a.active {
+    background: var(--blue-dim);
+    color: #fff;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all .2s ease;
+    border: 1px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: linear-gradient(90deg, var(--blue), var(--blue-bright));
+    color: #fff;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(59,130,246,.35);
+    transform: translateY(-1px);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--blue);
+    color: var(--blue-bright);
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,.12);
+    border: 1px solid rgba(59,130,246,.25);
+    color: var(--blue-bright);
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+  .hero-left { order: 1; }
+  .hero-visual { order: 2; }
+  .hero .badge { margin-bottom: 14px; }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+  .hero p {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .hero-trust {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .hero-trust span { display: flex; align-items: center; gap: 6px; }
+  .hero-visual {
+    background: linear-gradient(145deg, var(--card), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .visual-header {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .visual-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .visual-node {
+    background: rgba(29,78,216,.25);
+    border: 1px solid rgba(59,130,246,.35);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .visual-node .icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: rgba(59,130,246,.2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--blue-bright); font-size: 18px; flex-shrink: 0;
+  }
+  .visual-node strong { color: #fff; font-size: 14px; display: block; margin-bottom: 3px; }
+  .visual-node small { color: var(--muted); font-size: 12px; line-height: 1.4; display: block; }
+  .visual-node > div:last-child { min-width: 0; }
+  .visual-arrow {
+    text-align: center;
+    color: var(--blue-bright);
+    font-size: 18px;
+    margin: 6px 0;
+  }
+  .stats-section {
+    padding: 0 20px 40px;
+  }
+  .stats-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .stat {
+    background: var(--card);
+    padding: 22px 14px;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--blue-bright);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+  .summary-section {
+    padding: 50px 20px 40px;
+    background: linear-gradient(180deg, rgba(29,78,216,.06), transparent);
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .start-here-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
+    color: var(--blue-bright);
+    padding: 7px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .summary-section h2 {
+    margin-top: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+    font-size: 30px;
+    margin-bottom: 22px;
+  }
+  .summary-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .summary-lead {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+  .summary-points {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .summary-point {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .point-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(59,130,246,.15);
+    color: var(--blue-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .point-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .point-text strong {
+    color: #fff;
+    font-size: 15px;
+  }
+  .point-text span {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .summary-footer {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .summary-meta {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .toc-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .toc-box h3 {
+    margin-top: 0;
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+  .toc-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .toc-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    text-decoration: none;
+    transition: all .2s ease;
+  }
+  .toc-item:hover {
+    border-color: rgba(59,130,246,.4);
+  }
+  .toc-number {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(59,130,246,.15);
+    color: var(--blue-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .toc-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .toc-content strong {
+    color: #fff;
+    font-size: 15px;
+  }
+  .toc-content span {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .people-section {
+    padding: 40px 20px 30px;
+    border-bottom: 1px solid var(--border);
+  }
+  .people-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .person-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .person-photo {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(59,130,246,.3);
+    flex-shrink: 0;
+  }
+  .person-info h3 {
+    margin: 0 0 3px;
+    color: #fff;
+    font-size: 17px;
+  }
+  .person-title {
+    color: var(--blue-bright);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+  .person-bio {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 0 0 10px;
+  }
+  .person-link {
+    color: var(--blue-bright);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .person-link:hover { text-decoration: underline; }
+  .section-header {
+    text-align: left;
+    max-width: 720px;
+    margin: 0 0 40px;
+  }
+  .section-header .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    color: var(--blue-bright);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: #fff;
+    margin-bottom: 12px;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: 0;
+  }
+  .section-header p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: #fff;
+    margin-top: 56px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 18px;
+    color: var(--blue-bright);
+    margin-top: 28px;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  p { margin: 12px 0; color: var(--text); }
+  ul {
+    margin: 14px 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  li {
+    margin: 10px 0;
+    padding-left: 24px;
+    position: relative;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+  .grid-2, .grid-3, .grid-4 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .card h3:first-child { margin-top: 0; }
+  .feature-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(59,130,246,.15);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--blue-bright); font-size: 20px; margin-bottom: 14px;
+  }
+  .card h3 { color: #fff; font-size: 17px; margin-top: 0; }
+  .card p, .card li { color: var(--muted); font-size: 14px; }
+  .card li::before { background: var(--blue-bright); }
+  .highlight {
+    background: linear-gradient(90deg, rgba(29,78,216,.35), transparent);
+    border-left: 3px solid var(--blue);
+    padding: 18px 20px;
+    margin: 22px 0;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    margin: 22px 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+    background: var(--card);
+    font-size: 14px;
+  }
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--surface);
+    color: var(--blue-bright);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  tr:last-child td { border-bottom: none; }
+  strong { color: #fff; font-weight: 600; }
+  em { color: var(--blue-bright); font-style: italic; }
+  .sequence {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 22px 0;
+    align-items: center;
+  }
+  .sequence-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .arrow {
+    color: var(--blue);
+    font-size: 18px;
+  }
+  .ai-support {
+    background: linear-gradient(180deg, rgba(29,78,216,.1), transparent);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 50px 20px;
+  }
+  .ai-support-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .ai-support h2 {
+    margin-top: 0;
+    border-bottom: none;
+    font-size: 28px;
+  }
+  .ai-support .lead {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 760px;
+    margin: 14px 0 28px;
+  }
+  .ai-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin: 24px 0;
+  }
+  .flow-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--blue-bright);
+    font-size: 18px;
+  }
+  .ai-support .card h3 { margin-top: 0; color: #fff; }
+  .ai-support .card li::before { background: var(--blue-bright); }
+  .ai-support .note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+  .ai-support .highlight p { color: var(--text); margin: 0; }
+  .cta-section {
+    background: linear-gradient(145deg, var(--card), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 24px;
+    text-align: center;
+    margin: 50px 0;
+  }
+  .cta-section h2 {
+    margin-top: 0;
+    border-bottom: none;
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .cta-section p {
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 22px;
+    font-size: 15px;
+  }
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+    font-size: 13px;
+  }
+  @media (min-width: 769px) {
+    body { font-size: 16px; }
+    .menu-toggle { display: none; }
+    .nav {
+      display: flex !important;
+      position: static;
+      flex-direction: row;
+      background: transparent;
+      border-bottom: none;
+      padding: 0;
+      gap: 8px;
+    }
+    .topbar-inner { padding: 16px 24px; }
+    .logo { font-size: 22px; }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 50px;
+      padding: 80px 24px 60px;
+      align-items: start;
+    }
+    .hero-left { order: 1; }
+    .hero-visual { order: 2; }
+    h1 { font-size: 48px; }
+    .hero p { font-size: 17px; }
+    .hero-trust { flex-direction: row; gap: 16px 24px; }
+    .stats-section { padding: 0 24px 60px; }
+    .stats-bar { grid-template-columns: repeat(4, 1fr); }
+    .stat { padding: 32px 20px; }
+    .stat-number { font-size: 34px; }
+    .stat-label { font-size: 13px; }
+    main { padding: 0 24px 100px; }
+    .summary-section { padding: 70px 24px 50px; }
+    .summary-section h2 { font-size: 38px; }
+    .summary-box { padding: 36px; }
+    .summary-lead { font-size: 19px; }
+    .summary-points { flex-direction: row; gap: 28px; }
+    .toc-grid { flex-direction: row; flex-wrap: wrap; }
+    .toc-item { flex: 1 1 calc(50% - 8px); }
+    .people-section { padding: 50px 24px 40px; }
+    .people-inner { flex-direction: row; }
+    .person-card { flex: 1 1; }
+    .section-header { text-align: center; margin: 0 auto 50px; }
+    .section-header h2 { font-size: 36px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+    h2 { font-size: 34px; }
+    h3 { font-size: 20px; }
+    .ai-support { padding: 70px 24px; }
+    .ai-support h2 { font-size: 36px; }
+    .cta-section { padding: 56px 40px; }
+    .cta-section h2 { font-size: 34px; }
+  }
+  @media (min-width: 1024px) {
+    .hero { grid-template-columns: 1.2fr .8fr; gap: 60px; }
+    h1 { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">Regina Brooks Course Business</div>
+        <div class="nav">
+      <a href="index.html">Playbook</a>
+      <a href="strategy.html">Strategy</a>
+      <a href="marketing.html">Marketing</a>
+      <a href="ai-support.html" class="active">AI Support</a>
+      <a href="launch.html">Launch Plan</a>
+    </div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="badge">AI Support</div>
+    <h1>Automate Repeatable Work. Keep Human Judgment.</h1>
+    <p>AI drafts content, routes leads, and runs reminders — but Regina and her assistant approve everything public and make every important decision.</p>
+    <div class="hero-ctas">
+      <a href="#automation-map" class="btn btn-primary">View Automation Map</a>
+      <a href="#pilot" class="btn btn-secondary">See First Pilot</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="visual-header"><div class="visual-dot"></div><div class="visual-dot"></div><div class="visual-dot"></div></div>
+    <div class="visual-node">
+      <div class="icon">✍️</div>
+      <div><strong>Regina shares one idea</strong><small>Voice note, lesson, or interview</small></div>
+    </div>
+    <div class="visual-arrow">↓</div>
+    <div class="visual-node">
+      <div class="icon">⚙️</div>
+      <div><strong>AI drafts 5+ assets</strong><small>Article, email, social posts, scripts</small></div>
+    </div>
+    <div class="visual-arrow">↓</div>
+    <div class="visual-node">
+      <div class="icon">👁️</div>
+      <div><strong>Human approval queue</strong><small>Regina or assistant reviews and edits</small></div>
+    </div>
+  </div>
+</section>
+
+
+<main>
+<h2>The Human-AI Split</h2>
+
+<p>AI is used as a behind-the-scenes assistant, not a replacement for Regina. It prepares drafts, routes leads, and runs reminders. Regina and her assistant approve everything public and make every important decision.</p>
+
+<div class="section-header">
+  <div class="eyebrow">Workflow</div>
+  <h2>The Human-AI Split</h2>
+  <p>AI stays backstage. Regina stays the visible expert. Every public asset passes through approval.</p>
+</div>
+
+<div class="sequence">
+  <div class="sequence-step">Regina's idea</div>
+  <span class="arrow">→</span>
+  <div class="sequence-step">AI drafts content</div>
+  <span class="arrow">→</span>
+  <div class="sequence-step">Human approval</div>
+  <span class="arrow">→</span>
+  <div class="sequence-step">Published</div>
+</div>
+
+<hr>
+
+<div class="section-header">
+  <div class="eyebrow">Capabilities</div>
+  <h2>What AI Will Handle</h2>
+  <p>Four workstreams where AI removes repetitive production and routing work.</p>
+</div>
+
+<h2>What AI Will Handle</h2>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Content engine</h3>
+    <ul>
+      <li>Turn one lesson or voice note into article, newsletter, and social drafts.</li>
+      <li>Repurpose long-form content into Shorts, Reels, carousels, and quotes.</li>
+      <li>Suggest titles, headings, FAQs, and metadata for SEO/GEO.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Email and funnel</h3>
+    <ul>
+      <li>Welcome, diagnostic, workshop, launch, and alumni sequences.</li>
+      <li>Segment subscribers by source and behavior.</li>
+      <li>Send reminders and follow-ups after live events.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Demand generation</h3>
+    <ul>
+      <li>Run the Memoir Readiness Diagnostic and deliver personalized results.</li>
+      <li>Manage webinar registration, reminders, attendance, and replay follow-up.</li>
+      <li>Track partner links and attribute leads.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Operations and reporting</h3>
+    <ul>
+      <li>Summarize applications and flag fit issues.</li>
+      <li>Confirm payment, send onboarding, and assign cohorts.</li>
+      <li>Build dashboards and weekly decision briefs.</li>
+    </ul>
+  </div>
+</div>
+
+<hr>
+
+<h2>What Stays Human</h2>
+
+<ul>
+  <li>Live teaching and personal expertise.</li>
+  <li>Manuscript feedback and publishing advice.</li>
+  <li>Participant selection and admissions.</li>
+  <li>Final approval of all public content.</li>
+  <li>Partner relationships and introductions.</li>
+  <li>Sensitive communication, complaints, and refunds.</li>
+</ul>
+
+<hr>
+
+<h2>Marketing Work Automation Map</h2>
+
+<div class="table-wrap"><table>
+  <tr><th>Workstream</th><th>Automation target</th><th>What AI/tech does</th><th>Human role</th></tr>
+  <tr><td>Content idea → first drafts</td><td>90%</td><td>Draft article, newsletter, social posts, scripts from one approved source</td><td>Original idea, expertise, final approval</td></tr>
+  <tr><td>Social scheduling & repurposing</td><td>95%</td><td>Adapt and queue approved posts across channels</td><td>Visual/voice approval, DMs, relationships</td></tr>
+  <tr><td>Email lifecycle</td><td>90%</td><td>Welcome, diagnostic, workshop, launch, alumni sequences</td><td>Replies, exceptions, partnerships, final campaign approval</td></tr>
+  <tr><td>Lead routing & tagging</td><td>95%</td><td>Capture source, segment, deduplicate, route to right sequence</td><td>Engage qualified leads personally</td></tr>
+  <tr><td>Application summaries</td><td>85%</td><td>Summarize goals, readiness, flags</td><td>Make final acceptance decisions</td></tr>
+  <tr><td>Workshop / diagnostic funnel</td><td>90%</td><td>Registration, reminders, attendance tracking, follow-up segments</td><td>Live teaching, personal cohort invitation</td></tr>
+  <tr><td>SEO / GEO research</td><td>85%</td><td>Topic clusters, search briefs, titles, FAQ suggestions, structured data</td><td>Final quality, claims, expertise</td></tr>
+  <tr><td>Partner research & outreach prep</td><td>80%</td><td>Build partner list, score fit, draft outreach</td><td>Send and manage relationships personally</td></tr>
+  <tr><td>Reporting dashboard</td><td>90%</td><td>Pull metrics, calculate funnels, flag exceptions</td><td>Interpretation and strategic decisions</td></tr>
+  <tr><td>Teaching</td><td>10%</td><td>Prep material, summarize questions</td><td>Regina leads</td></tr>
+  <tr><td>Manuscript judgment</td><td>10%</td><td>Organize notes, flag structure gaps</td><td>Expert leads</td></tr>
+  <tr><td>Relationships & sensitive communication</td><td>20%</td><td>Reminders, notes, routing</td><td>Human-led</td></tr>
+</table></div>
+
+<hr>
+
+<h2>Safeguards</h2>
+
+<ul>
+  <li>Every automation defines: Trigger → Data → Decision → Tool → Action → Verification → Human escalation → Log → Metric.</li>
+  <li>Medium-risk actions (public drafts, campaign variations) require human approval before publishing.</li>
+  <li>High-risk actions (admissions, sensitive outreach, refunds, testimonials) require human decision.</li>
+  <li>Prohibited: impersonation, unapproved manuscript use, deceptive testimonials, protected-trait inference.</li>
+  <li>Audit trail records workflow version, input source, output, approval status, destination, result, and errors.</li>
+</ul>
+
+<hr>
+
+<h2>How We Prove It</h2>
+
+<p>We do not claim savings until we measure them. The first 30-day pilot tracks:</p>
+
+<ul>
+  <li>Baseline manual hours per workstream.</li>
+  <li>AI first-pass approval rate.</li>
+  <li>Average revision size and time.</li>
+  <li>Factual-error and off-brand rates.</li>
+  <li>Actual hours saved per approved asset.</li>
+</ul>
+
+<hr>
+
+<h2>Recommended First Pilot</h2>
+
+<p>Start with one contained workflow for 30 days:</p>
+
+<ol>
+  <li>Regina shares one teaching idea or voice note.</li>
+  <li>AI drafts one article + one newsletter + three social posts.</li>
+  <li>Regina or her assistant edits and approves.</li>
+  <li>Approved content is scheduled and published.</li>
+  <li>We measure time saved, approval rate, and engagement.</li>
+</ol>
+
+<p>Only expand to the diagnostic, email, and course-operations automations after this first workflow proves reliable.</p>
+
+</main>
+
+
+
+<footer class="footer">
+  <p>Prepared by <a href="https://www.brandops.site" target="_blank" rel="noopener noreferrer">Rajesh Kumar</a>, Founder of <a href="https://www.brandops.site" target="_blank" rel="noopener noreferrer">BrandOps Site</a></p>
+</footer>
+</body>
+</html>
